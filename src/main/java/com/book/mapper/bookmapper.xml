@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.book.mapper.BookMapper">
+
+	<resultMap type="com.book.pojo.Book" id="bookBean">
+		<id column="bid" property="id" />
+		<result column="bname" property="name" />
+		<result column="bdesc" property="desc_" />
+		<result column="inventory" property="inventory" />
+		<result column="money" property="money" />
+		<!-- 多对一的关系 -->
+		<association property="author" javaType="Author">
+			<id column="aid" property="id" />
+			<result column="aname" property="name" />
+			<result column="adesc" property="desc_" />
+		</association>
+		<!-- 多对一的关系 -->
+		<association property="category" javaType="Category">
+			<id column="cid" property="id" />
+			<result column="cname" property="name" />
+		</association>
+	</resultMap>
+	
+	<resultMap type="com.book.bean_num.Reader_bookNum_Tenbook" id="book_num">
+		<result column="name" property="name" />
+		<result column="num" property="num" />
+	</resultMap>
+
+	<insert id="addBook">
+		insert into book (name,author_id,category_id,desc_,inventory,money)
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="name != null">
+				#{name},
+			</if>
+			<if test="author.id != null">
+				#{author.id},
+			</if>
+			<if test="category.id != null">
+				#{category.id},
+			</if>
+			<if test="desc_ != null">
+				#{desc_},
+			</if>
+			<if test="inventory != null">
+				#{inventory,},
+			</if>
+			<if test="money != null">
+				#{money}
+			</if>
+		</trim>
+	</insert>
+
+	<delete id="deleteBook">
+		delete from book
+		<where>
+			<if test="id != null">
+				id = #{id}
+			</if>
+		</where>
+	</delete>
+
+	<update id="updateBook">
+		update book
+		<set>
+			<if test="name != null">
+				name = #{name},
+			</if>
+			<if test="author.id != null">
+				author_id = #{author.id},
+			</if>
+			<if test="category.id != null">
+				category_id = #{category.id},
+			</if>
+			<if test="desc_ != null">
+				desc_ = #{desc_},
+			</if>
+			<if test="inventory != null">
+				inventory = #{inventory},
+			</if>
+			<if test="money != null">
+				money = #{money},
+			</if>
+		</set>
+		<where>
+			<if test="id != null">
+				id = #{id}
+			</if>
+		</where>
+	</update>
+
+	<select id="getAllBook" resultMap="bookBean">
+		select b.id as bid,
+			   b.name as bname,
+			   b.desc_ as bdesc,
+			   b.inventory,
+			   b.money,
+			   a.id as aid,
+			   a.name as aname,
+			   a.desc_ as adesc,
+			   c.id as cid,
+			   c.name as cname
+		 from book as b left join author as a on a.id = b.author_id
+		 left join category as c on c.id = b.category_id
+		 ORDER BY b.id DESC 
+	</select>
+
+	<select id="getBook" resultMap="bookBean">
+		select b.id as bid,
+			   b.name as bname,
+			   b.desc_ as bdesc,
+			   b.inventory,
+			   b.money,
+			   a.id as aid,
+			   a.name as aname,
+			   a.desc_ as adesc,
+			   c.id as cid,
+			   c.name as cname
+		 from book as b left join author as a on a.id = b.author_id
+		 left join category as c on c.id = b.category_id
+		<where>
+			<if test="id != null">
+				b.id = #{id}
+			</if>
+		</where>
+		ORDER BY b.id DESC 
+	</select>
+
+	<select id="get_nameBook" resultMap="bookBean">
+		select b.id as bid,
+			   b.name as bname,
+			   b.desc_ as bdesc,
+			   b.inventory,
+			   b.money,
+			   a.id as aid,
+			   a.name as aname,
+			   a.desc_ as adesc,
+			   c.id as cid,
+			   c.name as cname
+		 from book as b left join author as a on a.id = b.author_id
+		 left join category as c on c.id = b.category_id
+		<where>
+			<if test="name != null">
+				b.name = #{name}
+			</if>
+		</where>
+		ORDER BY b.id DESC 
+	</select>
+	
+	<select id="get_categoryBook" resultMap="bookBean">
+		select b.id as bid,
+			   b.name as bname,
+			   b.desc_ as bdesc,
+			   b.inventory,
+			   b.money,
+			   a.id as aid,
+			   a.name as aname,
+			   a.desc_ as adesc,
+			   c.id as cid,
+			   c.name as cname
+		 from book as b left join author as a on a.id = b.author_id
+		 left join category as c on c.id = b.category_id
+		<where>
+			<if test="name != null">
+				c.name = #{name}
+			</if>
+		</where>
+		ORDER BY b.id DESC 
+	</select>
+	
+	<select id="get_authorBook" resultMap="bookBean">
+			select b.id as bid,
+			   b.name as bname,
+			   b.desc_ as bdesc,
+			   b.inventory,
+			   b.money,
+			   a.id as aid,
+			   a.name as aname,
+			   a.desc_ as adesc,
+			   c.id as cid,
+			   c.name as cname
+		 from book as b left join author as a on a.id = b.author_id
+		 left join category as c on c.id = b.category_id
+		<where>
+			<if test="name != null">
+				a.name = #{name}
+			</if>
+		</where>
+		ORDER BY b.id DESC 
+	</select>
+	
+	<select id="geTencategory_num" resultMap="book_num" >
+		SELECT c.name,
+		COUNT(c.id) as num 
+		from book as b 
+		left join category as c 
+		on b.category_id = c.id 
+		group by c.id
+	</select>
+	
+	<select id="getBookNum" resultType="int" >
+		select COUNT(id) from book
+	</select>
+</mapper>

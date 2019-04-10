@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>login</title>
+<style>
+* { /* *号选择所有 */
+	margin: 0; /*设定所有的外边距为0；*/
+	padding: 0; /*设定所有的内边距为0；*/
+}
+
+body {
+	background-color: rgb(36, 123, 160); /*用rgb来设置body的背景色。*/
+}
+
+.login {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	margin: auto;
+	/*上面将login的div设置垂直水平居中*/
+	width: 530px;
+	height: 360px;
+	background-color: white;
+	-moz-transition: box-shadow 1s; /* Firefox 4 */
+	-webkit-transition: box-shadow 1s; /* Safari 和 Chrome */
+	-o-transition: box-shadow 1s; /* Opera */
+	transition: box-shadow 1s;
+	border-radius: 7px; /*设置圆角*/
+	border: 1px solid rgba(34, 36, 38, .15);
+	/*上面设置边框为1像素，solid是边框线的颜色*/
+	padding: 1em 1em;
+}
+
+.login:hover {
+	box-shadow: 6px 6px 4px rgba(34, 36, 38, .15);
+}
+
+/*这里设置字体颜色过渡*/
+.login h1 {
+	width: 100%;
+	font-size: 2.5em;
+	text-align: center;
+	padding-bottom: 20px;
+	color: #666;
+	-moz-transition: color 0.8s; /* Firefox 4 */
+	-webkit-transition: color 0.8s; /* Safari 和 Chrome */
+	-o-transition: color 0.8s; /* Opera */
+	transition: color 0.8s;
+}
+
+.login h4 {
+	width: 100%;
+	font-size: 1.5em;
+	text-align: center;
+	padding-bottom: 10px;
+	color: black;
+	-moz-transition: color 0.8s; /* Firefox 4 */
+	-webkit-transition: color 0.8s; /* Safari 和 Chrome */
+	-o-transition: color 0.8s; /* Opera */
+	transition: color 0.8s;
+}
+
+.login h1:hover {
+	color: pink;
+}
+
+.login h4:hover {
+	color: darkred;
+}
+
+.login form {
+	width: 100%;
+}
+
+/*这里设置边框颜色过渡*/
+.login input {
+	width: 522px;
+	height: 34px;
+	padding: 5px;
+	border: 1px solid rgba(34, 36, 38, .15);
+	border-radius: 5px;
+	outline: none; /*取消原生的鼠标点击边框变色*/
+	-moz-transition: border-color 0.5s; /* Firefox 4 */
+	-webkit-transition: border-color 0.5s; /* Safari 和 Chrome */
+	-o-transition: border-color 0.5s; /* Opera */
+	transition: border-color 0.5s;
+}
+
+.login input:focus {
+	border-color: rgba(33, 133, 208, 0.6);
+
+	/*增加伪类焦点，当点击输入框时边框线会变色*/
+}
+
+.login label {
+	width: 100%;
+	display: inline-block;
+	/*行转块，行内元素是不能设置宽高的*/
+	padding-bottom: 5px;
+	font-size: 14px;
+}
+
+/*这里设置按钮颜色过渡*/
+.login button {
+	width: 100%;
+	color: white;
+	border-radius: 5px;
+	border: none; /*去掉边框线*/
+	outline: none;
+	height: 48px;
+	margin-top: 10px;
+	cursor: pointer; /*当鼠标移上去变小手图标*/
+	opacity: 0.8; /*设置透明度*/
+	-moz-transition: opacity 1s; /* Firefox 4 */
+	-webkit-transition: opacity 1s; /* Safari 和 Chrome */
+	-o-transition: opacity 1s; /* Opera */
+	transition: opacity 1s;
+}
+
+.login button:hover { /*设置hover，当鼠标移上去变色*/
+	opacity: 1;
+}
+
+.login button:nth-child(6) {
+	background-color: #009c95;
+}
+
+.login button:nth-child(7) {
+	background-color: #2185d0;
+}
+
+.login label:nth-child(4) {
+	padding-top: 12px;
+}
+</style>
+
+</head>
+
+<body>
+
+	<div class="login">
+		<form action="/login" method="post">
+			<h1>Login</h1>
+			<h4 th:text="${error}"></h4>
+			<label>username</label> 
+			<input type="text" name="username"
+				placeholder="usernmae" autocomplete="off" /> 
+			<label>password</label>
+			<input type="password" name="password" />
+			<button type="submit">login</button>
+		</form>
+	</div>
+
+</body>
+</html>

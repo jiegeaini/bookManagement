@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>jie</title>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+<link href="static/semantic/dist/semantic.min.css" rel="stylesheet" />
+<link href="static/css/ionicons.min.css" rel="stylesheet" />
+<link href="static/css/main.css?a=2" rel="stylesheet" />
+<link href="static/css/pace.css" rel="stylesheet" />
+<style>
+#logo_item {
+	padding: 0;
+}
+</style>
+</head>
+<body>
+	<div id="contextWrap">
+		<!--sidebar-->
+		<div
+			class="ui sidebar vertical left menu overlay  borderless visible sidemenu inverted  grey"
+			style="-webkit-transition-duration: 0.1s; transition-duration: 0.1s;"
+			data-color="grey">
+			<a id="logo_item" class="item logo" href="getIndex"> <img
+				src="static/img/book-3.jpg" alt="stagblogo" />
+			</a>
+			<div class="ui accordion inverted">
+				<div class="title item">
+					<i class="dropdown icon"></i> 书籍信息管理
+				</div>
+				<div class="content">
+					<a class="item" href="getBookViewPage"> 书籍信息查询 </a> <a class="item"
+						href="getAddBookPage"> 书籍信息增加 </a> <a class="item"
+						href="getCategoryPage"> 书籍分类信息查询 </a> <a class="item"
+						href="getAddCategoryPage"> 书籍分类信息增加 </a>
+				</div>
+				<div class="title item">
+					<i class="dropdown icon"></i> 作者信息管理
+				</div>
+				<div class="content">
+					<a href="getAuthorViewPage" class="item"> 作者信息查询 </a> <a
+						href="getAddAuthorPage" class="item"> 作者信息增加 </a>
+				</div>
+				<div class="title item">
+					<i class="dropdown icon"></i> 读者信息管理
+				</div>
+				<div class="content">
+					<a href="getReaderViewPage" class="item"> 读者信息查看 </a> <a
+						href="getAddReaderPage" class="item"> 读者信息增加 </a>
+				</div>
+				<div class="title item">
+					<i class="dropdown icon"></i> 借书信息管理
+				</div>
+				<div class="content">
+					<a href="getReader_bookViewPage" class="item"> 借书信息查看 </a> <a
+						href="getAddReader_bookPage" class="item"> 借书信息增加 </a> <a
+						href="getStateViewPage" class="item"> 借书状态信息查看 </a> <a
+						href="getAddStatePage" class="item"> 借书状态信息增加 </a>
+				</div>
+				<div class="title item">
+					<i class="dropdown icon"></i> 权限信息管理
+				</div>
+				<div class="content">
+					<a href="getUserViewPage" class="item"> 后台管理人员信息查看 </a> <a
+						href="getAddUserPage" class="item"> 后台管理人员信息增加 </a> <a
+						href="getRoleViewPage" class="item"> 角色信息查看 </a> <a
+						href="getAddRolePage" class="item"> 角色信息增加 </a> <a
+						href="getPermissionViewPage" class="item"> 权限信息查看 </a> <a
+						href="getAddPermissionPage" class="item"> 权限信息增加 </a>
+				</div>
+			</div>
+
+		</div>
+		<!--sidebar-->
+
+		<div class="pusher">
+			<!--navbar-->
+			<div class="navslide navwrap">
+				<div class="ui menu icon borderless grid"
+					data-color="inverted white">
+					<a class="item labeled openbtn"> <i
+						class="list layout large icon"></i>
+					</a> <a class="item labeled expandit"
+						onclick="toggleFullScreen(document.body)"> <i
+						class="maximize large icon"></i>
+					</a>
+
+					<div class="right menu colhidden">
+
+						<div class="ui dropdown item">
+							<img class="ui mini circular image" src="static/img/tou.jpg"
+								alt="label-image" />
+							<div class="menu">
+								<a class="item" href="outLogin">Sign Out</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--navbar-->
+			<!--maincontent-->
+			<div class="mainWrap navslide">
+				<div class="ui equal width left aligned padded grid stackable">
+					<!--Site Content-->
+					<!--Site Content-->
+
+					<div class="row">
+						<div class="sixteen wide column">
+							<div class="ui segments">
+								<div class="ui segment">
+									<h5 class="ui header">读者信息</h5>
+								</div>
+								<div class="ui segment">
+									<table id="data_table"
+										class="ui compact selectable striped celled table tablet stackable"
+										cellspacing="0" width="100%">
+										<thead>
+											<tr>
+												<th>ID</th>
+												<th>读者名称</th>
+												<th>读者身份证号</th>
+												<th>读者手机号</th>
+												<th>operation</th>
+											</tr>
+										</thead>
+
+										<tbody>
+
+											<tr th:each="r: ${r}">
+												<td th:text="${r.id}"></td>
+												<td th:text="${r.name}"></td>
+												<td th:text="${r.IdNumber}"></td>
+												<td th:text="${r.Number}"></td>
+												<td><a th:href="@{getUpdateReaderPage?(id=${r.id})}">
+														<i class="write large icon"></i>
+												</a> <a th:href="@{deleteReader?(id=${r.id})}"> <i
+														class="trash outline large icon"></i>
+												</a></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--maincontent-->
+		</div>
+	</div>
+
+
+	<!--jquery-->
+	<script src="static/js/jquery-2.1.4.min.js"
+		th:src="@{/static/js/jquery-2.1.4.min.js}"></script>
+	<!--jquery-->
+	<!--semantic-->
+	<script src="static/semantic/dist/semantic.min.js"
+		th:src="@{/static/semantic/dist/semantic.min.js}"></script>
+	<!--semantic-->
+	<script src="static/js/main.js" th:src="@{/static/js/main.js}"></script>
+	<script src="static/js/jquery.dataTables.js"
+		th:src="@{/static/js/jquery.dataTables.js}"></script>
+	<script src="static/js/custom-datatable.js"
+		th:src="@{/static/js/custom-datatable.js}"></script>
+</body>
+</html>

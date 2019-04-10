@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.book.mapper.ReaderMapper">
+	<insert id="addReader">
+		insert into reader (name,IdNumber,Number)
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="name != null">
+				#{name},
+			</if>
+			<if test="IdNumber != null">
+				#{IdNumber},
+			</if>
+			<if test="Number != null">
+				#{Number},
+			</if>
+		</trim>
+	</insert>
+
+	<delete id="deleteReader">
+		delete from reader
+		<where>
+			<if test="id != null">
+				id = #{id}
+			</if>
+		</where>
+	</delete>
+
+	<update id="updateReader">
+		update reader
+		<set>
+			<if test="name != null">
+				name = #{name},
+			</if>
+			<if test="IdNumber != null">
+				IdNumber = #{IdNumber},
+			</if>
+			<if test="Number != null">
+				Number = #{Number}
+			</if>
+		</set>
+		<where>
+			<if test="id != null">
+				id = #{id}
+			</if>
+		</where>
+	</update>
+
+	<select id="getAllReader" resultType="com.book.pojo.Reader">
+		select * from reader
+	</select>
+
+	<select id="getReader" resultType="com.book.pojo.Reader">
+		select * from reader
+		<where>
+			<if test="id != null">
+				id = #{id}
+			</if>
+		</where>
+	</select>
+
+	<select id="get_nameReader" resultType="com.book.pojo.Reader">
+		select * from reader
+		<where>
+			<if test="name != null">
+				name = #{name}
+			</if>
+		</where>
+	</select>
+</mapper>

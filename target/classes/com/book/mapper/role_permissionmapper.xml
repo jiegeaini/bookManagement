@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.book.mapper.Role_permissionMapper">
+
+	<resultMap type="Role_permission" id="Role_permissionBean">
+		<id column="rpid" property="id" />
+		<!-- 多对一的关系 -->
+		<association property="role" javaType="Role">
+			<id column="rid" property="id" />
+			<result column="rname" property="name" />
+			<result column="rdesc" property="desc_" />
+		</association>
+		<!-- 多对一的关系 -->
+		<association property="permission" javaType="Permission">
+			<id column="pid" property="id" />
+			<result column="pname" property="name" />
+			<result column="pdesc" property="desc_" />
+			<result column="url" property="url" />
+		</association>
+	</resultMap>
+
+
+
+	<insert id="addRole_permission">
+		insert into role_permission (rid,pid)
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="role.id != null">
+				#{role.id},
+			</if>
+			<if test="permission.id != null">
+				#{permission.id},
+			</if>
+		</trim>
+	</insert>
+
+	<delete id="deleteRole_permission">
+		delete from role_permission
+		<where>
+			<if test="id != null">
+				id = #{id}
+			</if>
+		</where>
+	</delete>
+
+	<update id="updateRole_permission">
+		update role_permission
+		<set>
+			<if test="role.id != null">
+				rid = #{role.id},
+			</if>
+			<if test="permission.id != null">
+				pid = #{permission.id}
+			</if>
+		</set>
+		<where>
+			<if test="id != null">
+				id = #{id}
+			</if>
+		</where>
+	</update>
+
+	<select id="getAllRole_permission"
+		resultMap="Role_permissionBean">
+		select
+		rp.id as rpid,
+		r.name as rname,
+		r.desc_ as rdesc,
+		p.name
+		as pname,
+		p.desc_ as pdesc,
+		p.url
+		from
+		role_permission as rp left join role as r
+		on r.id = rp.rid
+		left join
+		permission as p
+		on p.id = rp.pid
+		ORDER BY rp.id DESC
+	</select>
+
+	<select id="getRole_permission" resultMap="Role_permissionBean">
+		select
+		rp.id as rpid,
+		r.name as rname,
+		r.desc_ as rdesc,
+		p.name
+		as pname,
+		p.desc_ as pdesc,
+		p.url
+		from
+		role_permission as rp left join role as r
+		on r.id = rp.rid
+		left join
+		permission as p
+		on p.id = rp.pid
+		<where>
+			<if test="id != null">
+				rp.id = #{id}
+			</if>
+		</where>
+	</select>
+
+	<select id="get_RoleNameRole_permission"
+		resultMap="Role_permissionBean">
+		select
+		rp.id as rpid,
+		r.name as rname,
+		r.desc_ as rdesc,
+		p.name
+		as pname,
+		p.desc_ as pdesc,
+		p.url
+		from
+		role_permission as rp left join role as r
+		on r.id = rp.rid
+		left join
+		permission as p
+		on p.id = rp.pid
+		<where>
+			<if test="name != null">
+				r.name = #{name}
+			</if>
+		</where>
+		ORDER BY rp.id DESC
+	</select>
+
+	<select id="get_PermissionNameRole_permission"
+		resultMap="Role_permissionBean">
+		select
+		rp.id as rpid,
+		r.name as rname,
+		r.desc_ as rdesc,
+		p.name
+		as pname,
+		p.desc_ as pdesc,
+		p.url
+		from
+		role_permission as rp left join role as r
+		on r.id = rp.rid
+		left join
+		permission as p
+		on p.id = rp.pid
+		<where>
+			<if test="name != null">
+				p.name = #{name}
+			</if>
+		</where>
+		ORDER BY rp.id DESC
+	</select>
+</mapper>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Standard Meta -->
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />   
+    <title>error</title>
+  <link rel="stylesheet" type="text/css" href="static/semantic/dist/semantic.min.css" th:href="@{/static/semantic/dist/semantic.min.css}"  />
+  <link rel="stylesheet" type="text/css" href="static/css/main.css" th:href="@{/static/css/main.css}"  />
+
+</head>
+<body class="error404">
+    <div class="ui container" style="padding-top:5%">
+        <div class="ui grid center aligned">
+            <div class="row">
+                <div class="sixteen wide tablet ten wide computer column">
+
+                    <div class="ui container center aligned errorcontainer">
+                        <h1 class="ui header inverted" th:text="${error}"></h1>
+                        <a class="ui button" href="getIndex">
+                           返回首页
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.book.mapper.Reader_bookMapper">
+
+
+	<resultMap type="Reader_book" id="Reader_bookBean">
+		<id column="rbid" property="id" />
+		<result column="time" property="time" />
+		<result column="expirationTime" property="expirationTime" />
+		<result column="rbmoney" property="money" />
+		<result column="TheDeposit" property="TheDeposit" />
+
+		<!-- 多对一的关系 -->
+		<association property="reader" javaType="Reader">
+			<id column="rid" property="id" />
+			<result column="rname" property="name" />
+		</association>
+
+		<!-- 多对一的关系 -->
+		<association property="book" javaType="Book">
+			<id column="bid" property="id" />
+			<result column="bname" property="name" />
+			<result column="bdesc" property="desc_" />
+			<result column="inventory" property="inventory" />
+			<result column="money" property="money" />
+			<!-- 多对一的关系 -->
+			<association property="author" javaType="Author">
+				<id column="aid" property="id" />
+				<result column="aname" property="name" />
+			</association>
+			<!-- 多对一的关系 -->
+			<association property="category" javaType="Category">
+				<id column="cid" property="id" />
+				<result column="cname" property="name" />
+			</association>
+		</association>
+
+		<!-- 多对一的关系 -->
+		<association property="state" javaType="State">
+			<id column="sid" property="id" />
+			<result column="sname" property="name" />
+		</association>
+
+	</resultMap>
+	
+	
+	<resultMap type="com.book.bean_num.Reader_bookNum_Tenbook" id="book_num">
+		<result column="name" property="name" />
+		<result column="num" property="num" />
+	</resultMap>
+	
+
+	<insert id="addReader_book">
+		insert into Reader_book
+		(reader_id,book_id,state_id,time,expirationTime,money,TheDeposit)
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="reader.id != null">
+				#{reader.id},
+			</if>
+			<if test="book.id != null">
+				#{book.id},
+			</if>
+			<if test="state.id != null">
+				#{state.id},
+			</if>
+			<if test="time != null">
+				#{time},
+			</if>
+			<if test="expirationTime != null">
+				#{expirationTime},
+			</if>
+			<if test="money != null">
+				#{money},
+			</if>
+			<if test="TheDeposit != null">
+				#{TheDeposit},
+			</if>
+		</trim>
+	</insert>
+
+	<delete id="deleteReader_book">
+		delete from Reader_book
+		<where>
+			<if test="id != null">
+				id = #{id}
+			</if>
+		</where>
+	</delete>
+
+	<update id="updateReader_book">
+		update Reader_book
+		<set>
+			<if test="reader.id != null">
+				reader_id = #{reader.id},
+			</if>
+			<if test="book.id != null">
+				book_id = #{book.id},
+			</if>
+			<if test="state.id != null">
+				state_id = #{state.id},
+			</if>
+			<if test="time != null">
+				time = #{time},
+			</if>
+			<if test="expirationTime != null">
+				expirationTime = #{expirationTime},
+			</if>
+			<if test="money != null">
+				money = #{money},
+			</if>
+			<if test="TheDeposit != null">
+				TheDeposit = #{TheDeposit},
+			</if>
+		</set>
+		<where>
+			<if test="id != null">
+				id = #{id}
+			</if>
+		</where>
+	</update>
+
+	<select id="getAllReader_book" resultMap="Reader_bookBean">
+		select rb.id as rbid,
+		rb.time,
+		rb.expirationTime,
+		rb.money as
+		rbmoney,
+		rb.TheDeposit,
+		r.id as
+		rid,
+		r.name as rname,
+		b.id as bid,
+		b.name
+		as bname,
+		b.desc_ as bdesc,
+		b.inventory,
+		b.money,
+		a.id as aid,
+		a.name as
+		aname,
+		c.id as cid,
+		c.name as cname,
+		s.id
+		as sid,
+		s.name as sname
+		from
+		reader_book as rb left join reader as r
+		on
+		r.id = rb.reader_id
+		left join
+		book as b
+		on b.id = rb.book_id
+		left join
+		state as s
+		on s.id = rb.state_id
+		left join author as a
+		on a.id =
+		b.author_id
+		left join category as c
+		on
+		c.id = b.category_id
+		ORDER BY
+		rb.id DESC
+	</select>
+
+	<select id="getReader_book" resultMap="Reader_bookBean">
+		select rb.id as rbid,
+		rb.time,
+		rb.expirationTime,
+		rb.money as
+		rbmoney,
+		rb.TheDeposit,
+		r.id as rid,
+		r.name as rname,
+		b.id as bid,
+		b.name
+		as bname,
+		b.desc_ as bdesc,
+		b.inventory,
+		b.money,
+		a.id as aid,
+		a.name as aname,
+		c.id as cid,
+		c.name as cname,
+		s.id
+		as sid,
+		s.name as sname
+		from
+		reader_book as rb left join reader as r
+		on
+		r.id =
+		rb.reader_id
+		left join book as b
+		on b.id = rb.book_id
+		left join
+		state as s
+		on s.id = rb.state_id
+		left join author as a
+		on a.id =
+		b.author_id
+		left
+		join category as c
+		on c.id = b.category_id
+		<where>
+			<if test="id != null">
+				rb.id = #{id}
+			</if>
+		</where>
+	</select>
+
+	<select id="get_ReaderName_Reader_book"
+		resultMap="Reader_bookBean">
+		select rb.id as rbid,
+		rb.time,
+		rb.expirationTime,
+		rb.money as
+		rbmoney,
+		rb.TheDeposit,
+		r.id as rid,
+		r.name as rname,
+		b.id as bid,
+		b.name
+		as bname,
+		b.desc_ as bdesc,
+		b.inventory,
+		b.money,
+		a.id as aid,
+		a.name as aname,
+		c.id as cid,
+		c.name as cname,
+		s.id
+		as sid,
+		s.name as sname
+		from
+		reader_book as rb left join reader as r
+		on
+		r.id =
+		rb.reader_id
+		left join book as b
+		on b.id = rb.book_id
+		left join
+		state as s
+		on s.id = rb.state_id
+		left join author as a
+		on a.id =
+		b.author_id
+		left
+		join category as c
+		on c.id = b.category_id
+		<where>
+			<if test="name != null">
+				r.name = #{name}
+			</if>
+		</where>
+		ORDER BY rb.id DESC
+	</select>
+
+	<select id="get_BookNameReader_book" resultMap="Reader_bookBean">
+		select rb.id as rbid,
+		rb.time,
+		rb.expirationTime,
+		rb.money as
+		rbmoney,
+		rb.TheDeposit,
+		r.id as rid,
+		r.name as rname,
+		b.id as bid,
+		b.name
+		as bname,
+		b.desc_ as bdesc,
+		b.inventory,
+		b.money,
+		a.id as aid,
+		a.name as aname,
+		c.id as cid,
+		c.name as cname,
+		s.id
+		as sid,
+		s.name as sname
+		from
+		reader_book as rb left join reader as r
+		on
+		r.id =
+		rb.reader_id
+		left join book as b
+		on b.id = rb.book_id
+		left join
+		state as s
+		on s.id = rb.state_id
+		left join author as a
+		on a.id =
+		b.author_id
+		left
+		join category as c
+		on c.id = b.category_id
+		<where>
+			<if test="name != null">
+				b.name = #{name}
+			</if>
+		</where>
+		ORDER BY rb.id DESC
+	</select>
+
+	<select id="get_categoryReader_book" resultMap="Reader_bookBean">
+		select rb.id as rbid,
+		rb.time,
+		rb.expirationTime,
+		rb.money as
+		rbmoney,
+		rb.TheDeposit,
+		r.id as rid,
+		r.name as rname,
+		b.id as bid,
+		b.name
+		as bname,
+		b.desc_ as bdesc,
+		b.inventory,
+		b.money,
+		a.id as aid,
+		a.name as aname,
+		c.id as cid,
+		c.name as cname,
+		s.id
+		as sid,
+		s.name as sname
+		from
+		reader_book as rb left join reader as r
+		on
+		r.id =
+		rb.reader_id
+		left join book as b
+		on b.id = rb.book_id
+		left join
+		state as s
+		on s.id = rb.state_id
+		left join author as a
+		on a.id =
+		b.author_id
+		left
+		join category as c
+		on c.id = b.category_id
+		<where>
+			<if test="name != null">
+				c.name = #{name}
+			</if>
+		</where>
+		ORDER BY rb.id DESC
+	</select>
+
+	<select id="get_authorReader_book" resultMap="Reader_bookBean">
+		select rb.id as rbid,
+		rb.time,
+		rb.expirationTime,
+		rb.money as
+		rbmoney,
+		rb.TheDeposit,
+		r.id as rid,
+		r.name as rname,
+		b.id as bid,
+		b.name
+		as bname,
+		b.desc_ as bdesc,
+		b.inventory,
+		b.money,
+		a.id as aid,
+		a.name as aname,
+		c.id as cid,
+		c.name as cname,
+		s.id
+		as sid,
+		s.name as sname
+		from
+		reader_book as rb left join reader as r
+		on
+		r.id =
+		rb.reader_id
+		left join book as b
+		on b.id = rb.book_id
+		left join
+		state as s
+		on s.id = rb.state_id
+		left join author as a
+		on a.id =
+		b.author_id
+		left
+		join category as c
+		on c.id = b.category_id
+		<where>
+			<if test="name != null">
+				a.name = #{name}
+			</if>
+		</where>
+		ORDER BY rb.id DESC
+	</select>
+	
+	<select id="geTenbooks" resultMap="book_num">
+		SELECT b.name,
+		COUNT(book_id) as num 
+		from reader_book as rb 
+		left JOIN book as b 
+		on rb.book_id = b.id
+		GROUP BY book_id ORDER BY num DESC
+		LIMIT 10
+	</select>
+	
+	<select id="geTenauthor" resultMap="book_num">
+		SELECT a.name,
+		COUNT(book_id) as num
+		from reader_book as rb 
+		left JOIN book as b 
+		on rb.book_id = b.id 
+		LEFT JOIN author as a 
+		on b.author_id = a.id 
+		GROUP BY a.`name`  ORDER BY num DESC LIMIT 10
+	</select>
+	
+	<select id="geTenreader" resultMap="book_num">
+		SELECT r.name,
+		COUNT(reader_id) as num
+		from reader_book as rb 
+		left JOIN reader as r 
+		on rb.reader_id = r.id 
+		GROUP BY reader_id ORDER BY num DESC LIMIT 10
+	</select>
+	
+	<select id="geTencategory" resultMap="book_num">
+		SELECT c.name,
+		COUNT(book_id) as num
+		from reader_book as rb 
+		left JOIN book as b 
+		on rb.book_id = b.id 
+		LEFT JOIN category as c 
+		on b.category_id = c.id 
+		GROUP BY c.name ORDER BY num DESC LIMIT 10
+	</select>
+	
+	<select id="getReader_bookNum" resultType="int">
+		select COUNT(id) from reader_book
+	</select>
+</mapper>
